@@ -132,6 +132,20 @@ a{color:inherit}
 
 /* ---------- sections ---------- */
 section{padding:88px 0;border-top:2px solid var(--ink)}
+
+/* ---------- coursework ---------- */
+.courses{
+  list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);
+  background:var(--white);border:2px solid var(--ink);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;
+}
+@media (max-width:980px){.courses{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:640px){.courses{grid-template-columns:1fr}}
+.course{padding:20px 22px;border-right:1.5px solid var(--plate-2);border-bottom:1.5px solid var(--plate-2)}
+.course .code{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);font-weight:800;font-size:1.15rem;letter-spacing:-.01em}
+.course .code::before{content:"";width:11px;height:11px;border-radius:50%;background:var(--c);border:1.5px solid var(--ink)}
+.course .now{font-size:.75rem;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--lime);border:1.5px solid var(--ink);margin-left:6px;vertical-align:2px}
+.course h3{font-size:.98rem;font-weight:600;margin:2px 0 8px;color:var(--ink-soft)}
+.course ul{margin:0;padding-left:18px;font-size:.95rem;line-height:1.5}
 .section-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:20px;margin-bottom:36px}
 h2.title{font-family:var(--display);font-weight:800;letter-spacing:-.035em;font-size:clamp(2.4rem,6vw,4rem);line-height:1;margin:0}
 .lede{max-width:52ch;margin:12px 0 0;color:var(--ink-soft)}
@@ -261,6 +275,7 @@ footer .gcode{display:block;margin-top:6px;font-family:ui-monospace,Menlo,Consol
   <div class="wrap">
     <a class="logo" href="#top">Stella Ormandy<span aria-hidden="true"></span></a>
     <ul class="nav">
+      <li><a href="#coursework">Coursework</a></li>
       <li><a href="#projects">Projects</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#about">About</a></li>
@@ -302,6 +317,45 @@ footer .gcode{display:block;margin-top:6px;font-family:ui-monospace,Menlo,Consol
       </aside>
     </div>
   </div>
+
+  <!-- ============ COURSEWORK ============ -->
+  <section id="coursework">
+    <div class="wrap">
+      <div class="section-head"><h2 class="title">Relevant coursework</h2></div>
+      <ul class="courses">
+        <li class="course" style="--c:var(--magenta)">
+          <span class="code">MANU 330</span><span class="now">In progress</span>
+          <h3>Manufacturing Engineering Project I</h3>
+          <ul><li>Full-year team design-and-build project</li><li>FDM 3D printing of prototype components</li></ul>
+        </li>
+        <li class="course" style="--c:var(--magenta)">
+          <span class="code">MECH 491</span><span class="now">In progress</span>
+          <h3>Computer Aided Manufacturing</h3>
+          <ul><li>CNC part programming in G-code</li><li>Toolpath planning for finish machining</li></ul>
+        </li>
+        <li class="course" style="--c:var(--cyan)">
+          <span class="code">MECH 368</span>
+          <h3>Engineering Measurements &amp; Instrumentation</h3>
+          <ul><li>Sensor integration: IMU, IR, encoders</li><li>BLE communication and Python data visualization</li></ul>
+        </li>
+        <li class="course" style="--c:var(--cyan)">
+          <span class="code">MANU 386</span>
+          <h3>Industrial Automation</h3>
+          <ul><li>PLC programming (ClickPLC) and pneumatic circuits</li><li>Robot cell simulation in RoboDK</li></ul>
+        </li>
+        <li class="course" style="--c:var(--magenta)">
+          <span class="code">MANU 230</span>
+          <h3>Manufacturing Engineering Laboratory</h3>
+          <ul><li>3D printing, thermoforming, injection moulding, sand casting</li><li>Instron tensile and compression testing</li></ul>
+        </li>
+        <li class="course" style="--c:var(--lime)">
+          <span class="code">APSC 100/101</span>
+          <h3>Introduction to Engineering I &amp; II</h3>
+          <ul><li>Team design-build projects with Arduino</li><li>CAD, technical drawing and decision matrices</li></ul>
+        </li>
+      </ul>
+    </div>
+  </section>
 
   <!-- ============ PROJECTS ============ -->
   <section id="projects">
