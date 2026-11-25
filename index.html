@@ -169,7 +169,7 @@ h2.title{font-family:var(--display);font-weight:800;letter-spacing:-.035em;font-
   box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;
 }
 .card.featured{grid-column:span 2}
-@media (max-width:640px){.card.featured{grid-column:auto}}
+@media (max-width:640px){.card.featured{grid-column:auto}.card.featured .media{aspect-ratio:4/3}}
 .card.featured .media{aspect-ratio:16/8}
 .card[hidden]{display:none}
 .media{aspect-ratio:4/3;border-bottom:2px solid var(--ink);background:var(--c);position:relative;overflow:hidden}
@@ -181,6 +181,11 @@ h2.title{font-family:var(--display);font-weight:800;letter-spacing:-.035em;font-
 .slide img{position:relative;width:100%;height:100%;object-fit:contain}
 .slide img.backdrop{position:absolute;inset:0;object-fit:cover;filter:blur(22px) brightness(.8) saturate(1.1);transform:scale(1.2)}
 .slide.board img{padding:8px}
+.slide.cover{background:var(--c);display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:14px;padding:26px 28px;
+  background-image:radial-gradient(color-mix(in srgb,var(--ink) 14%,transparent) 1.2px,transparent 1.3px);background-size:14px 14px}
+.slide.cover h4{margin:0;font-family:var(--display);font-weight:800;letter-spacing:-.03em;line-height:1.02;color:var(--ink);font-size:clamp(1.5rem,2.6vw,2.2rem);max-width:16ch}
+.card.featured .slide.cover h4{font-size:clamp(1.9rem,3.6vw,3rem)}
+.slide.cover .hint{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:.85rem;color:var(--ink);background:var(--white);border:2px solid var(--ink);border-radius:999px;padding:5px 12px}
 .arrow{
   position:absolute;top:50%;transform:translateY(-50%);z-index:2;
   width:44px;height:56px;display:grid;place-items:center;padding:0;
@@ -328,8 +333,6 @@ footer .gcode{display:block;margin-top:6px;font-family:ui-monospace,Menlo,Consol
         <li style="--c:var(--cyan)"><span class="code">CPEN 333</span><span class="cname">System Software Engineering</span><span class="cdesc">Object-oriented design and concurrency; version control with Git/GitHub</span></li>
         <li style="--c:var(--magenta)"><span class="code">MANU 378</span><span class="cname">Engineering Materials II</span><span class="cdesc">Material selection by design criteria and process (Ansys Granta)</span></li>
         <li style="--c:var(--magenta)"><span class="code">MECH 360</span><span class="cname">Mechanics of Materials</span><span class="cdesc">Stress, deflection and failure analysis; FEA in ANSYS</span></li>
-        <li style="--c:var(--lime)"><span class="code">STAT 251</span><span class="cname">Elementary Statistics</span><span class="cdesc">Hypothesis testing and process data analysis in R and Excel</span></li>
-        <li style="--c:var(--magenta)"><span class="code">MANU 230</span><span class="cname">Manufacturing Engineering Lab</span><span class="cdesc">Casting, thermoforming, injection moulding, Instron tensile testing</span></li>
       </ul>
     </div>
   </section>
@@ -657,20 +660,21 @@ function buildCarousel(media){
     const im = new Image(); im.onload = () => res(item); im.onerror = () => res(null); im.src = item.src;
   }))).then(found => {
     const srcs = found.filter(Boolean);
-    if (!srcs.length) { media.replaceChildren(placeholder(list[0] ? list[0].src : "images/")); return; }
-    media.innerHTML = `<div class="slides">${srcs.map((s, k) =>
+    const cover = `<div class="slide cover"><h4>${esc(p.title)}</h4>${srcs.length ? `<span class="hint">Swipe for photos &rarr;</span>` : ""}</div>`;
+    media.innerHTML = `<div class="slides">${cover}${srcs.map((s, k) =>
       (s.fit === "contain"
         ? `<div class="slide board"><img src="${esc(s.src)}" alt="${esc(p.title)}, image ${k + 1} of ${srcs.length}" loading="lazy"></div>`
         : `<div class="slide"><img class="backdrop" src="${esc(s.src)}" alt="" aria-hidden="true" loading="lazy"><img src="${esc(s.src)}" alt="${esc(p.title)}, image ${k + 1} of ${srcs.length}" loading="lazy"></div>`)).join("")}</div>`;
-    if (srcs.length < 2) return;
+    if (!srcs.length) return;
+    const n = srcs.length + 1;
     const track = media.querySelector(".slides");
     media.insertAdjacentHTML("beforeend",
       `<button class="arrow prev" type="button" aria-label="Previous photo">${TRI("prev")}</button>
        <button class="arrow next" type="button" aria-label="Next photo">${TRI("next")}</button>
-       <div class="dots">${srcs.map(() => "<i></i>").join("")}</div>`);
+       <div class="dots">${"<i></i>".repeat(n)}</div>`);
     const dots = [...media.querySelectorAll(".dots i")];
     const idx = () => Math.round(track.scrollLeft / track.clientWidth);
-    const go = k => track.scrollTo({ left: ((k + srcs.length) % srcs.length) * track.clientWidth });
+    const go = k => track.scrollTo({ left: ((k + n) % n) * track.clientWidth });
     const mark = () => dots.forEach((d, k) => d.classList.toggle("on", k === idx()));
     media.querySelector(".prev").onclick = () => go(idx() - 1);
     media.querySelector(".next").onclick = () => go(idx() + 1);
